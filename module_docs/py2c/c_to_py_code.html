@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>py2c.c_to_py_code &mdash; py2c 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="py2c.py_to_c_code" href="py_to_c_code.html" />
+    <link rel="prev" title="py2c" href="../py2c.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            py2c
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../py2c.html">py2c</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">py2c.c_to_py_code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#py2c.c_to_py_code.c_to_py_signature"><code class="docutils literal notranslate"><span class="pre">c_to_py_signature()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#py2c.c_to_py_code.generate_python_wrappers"><code class="docutils literal notranslate"><span class="pre">generate_python_wrappers()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#py2c.c_to_py_code.get_type_name"><code class="docutils literal notranslate"><span class="pre">get_type_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#py2c.c_to_py_code.parse_c_file"><code class="docutils literal notranslate"><span class="pre">parse_c_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="py_to_c_code.html">py2c.py_to_c_code</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">py2c</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">py2c.c_to_py_code</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/py2c/c_to_py_code.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-py2c.c_to_py_code">
+<span id="py2c-c-to-py-code"></span><h1>py2c.c_to_py_code<a class="headerlink" href="#module-py2c.c_to_py_code" title="Link to this heading"></a></h1>
+<p>This module provides tools to parse C function declarations and generate corresponding Python interfaces with type annotations. It utilizes the pycparser library to parse C code and extract function declarations, mapping C types to Python types based on a customizable type mapping dictionary (c_to_py_type).</p>
+<dl class="simple">
+<dt>Features:</dt><dd><ul class="simple">
+<li><p>C Function Parsing: Parses C files to extract function declarations.</p></li>
+<li><p>Python Interface Generation: Generates Python function signatures with type annotations that correspond to the extracted C functions.</p></li>
+<li><p>Customizable Type Mapping: Allows customization of C to Python type mappings through the c_to_py_type dictionary.</p></li>
+<li><p>Extensibility: The type mapping and signature generation can be extended to handle more complex types and cases.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<p>To generate Python wrappers for a C file, run the script with the C file as an argument:</p>
+<p>python bridge.py &lt;c_file.c&gt;</p>
+<p>Example:</p>
+<p>Given a C file example.c containing:</p>
+<p>int add(int a, int b);
+float multiply(float x, float y);
+void print_message(char <a href="#id1"><span class="problematic" id="id2">*</span></a>message);</p>
+<p>Running python bridge.py example.c would output:</p>
+<dl class="simple">
+<dt>def add(a: int, b: int) -&gt; int:</dt><dd><p>pass  # TODO: Implement the wrapper</p>
+</dd>
+<dt>def multiply(x: float, y: float) -&gt; float:</dt><dd><p>pass  # TODO: Implement the wrapper</p>
+</dd>
+<dt>def print_message(message: str) -&gt; None:</dt><dd><p>pass  # TODO: Implement the wrapper</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The c_to_py_type dictionary maps C types to Python types and can be modified to include additional type mappings as needed.</p></li>
+<li><p>The generated Python functions contain placeholder pass statements. You need to implement the actual bridging logic, possibly using libraries like ctypes or cffi.</p></li>
+<li><p>The script uses pycparser for parsing C code, so ensure it is installed (pip install pycparser) and accessible in your environment.</p></li>
+<li><p>The parsing process assumes that the necessary C headers are available. If not, you might need to adjust the parse_file function’s arguments or provide appropriate header files.</p></li>
+</ul>
+<dl class="simple">
+<dt>Dependencies:</dt><dd><ul class="simple">
+<li><p>Python 3.x</p></li>
+<li><p>pycparser library</p></li>
+</ul>
+</dd>
+<dt>Author:</dt><dd><ul class="simple">
+<li><p>Your Name or Organization</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="py2c.c_to_py_code.c_to_py_signature">
+<span class="sig-prename descclassname"><span class="pre">py2c.c_to_py_code.</span></span><span class="sig-name descname"><span class="pre">c_to_py_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func_decl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FuncDecl</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/py2c/c_to_py_code.html#c_to_py_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#py2c.c_to_py_code.c_to_py_signature" title="Link to this definition"></a></dt>
+<dd><p>Converts a C function declaration to a Python function signature
+with type annotations based on c_to_py_type mapping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func_decl</strong> – The C function declaration node.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string representing the Python function signature.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="py2c.c_to_py_code.generate_python_wrappers">
+<span class="sig-prename descclassname"><span class="pre">py2c.c_to_py_code.</span></span><span class="sig-name descname"><span class="pre">generate_python_wrappers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/py2c/c_to_py_code.html#generate_python_wrappers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#py2c.c_to_py_code.generate_python_wrappers" title="Link to this definition"></a></dt>
+<dd><p>Generates Python wrapper functions from a C file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>c_filename</strong> – The path to the C file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="py2c.c_to_py_code.get_type_name">
+<span class="sig-prename descclassname"><span class="pre">py2c.c_to_py_code.</span></span><span class="sig-name descname"><span class="pre">get_type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_node</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/py2c/c_to_py_code.html#get_type_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#py2c.c_to_py_code.get_type_name" title="Link to this definition"></a></dt>
+<dd><p>Recursively retrieves the type name from a type node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_node</strong> – The type node from the AST.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string representing the type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="py2c.c_to_py_code.parse_c_file">
+<span class="sig-prename descclassname"><span class="pre">py2c.c_to_py_code.</span></span><span class="sig-name descname"><span class="pre">parse_c_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/py2c/c_to_py_code.html#parse_c_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#py2c.c_to_py_code.parse_c_file" title="Link to this definition"></a></dt>
+<dd><p>Parses a C file and extracts function declarations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – The path to the C file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of function declaration nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../py2c.html" class="btn btn-neutral float-left" title="py2c" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="py_to_c_code.html" class="btn btn-neutral float-right" title="py2c.py_to_c_code" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

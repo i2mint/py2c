@@ -1,0 +1,4 @@
+py2c
+====
+.. automodule:: py2c
+   :members:

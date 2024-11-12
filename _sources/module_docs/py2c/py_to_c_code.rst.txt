@@ -1,0 +1,4 @@
+py2c.py_to_c_code
+=================
+.. automodule:: py2c.py_to_c_code
+   :members:
